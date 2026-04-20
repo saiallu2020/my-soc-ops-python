@@ -14,7 +14,7 @@ QUESTIONS: Final[list[str]] = [
     "uses tabs over spaces",
     "uses vim keybindings anywhere",
     "changes ide theme weekly",
-    "changes ide font size weekly",
+    "switches between monospace fonts",
     "keeps a side project graveyard",
     "hoards unread tech newsletters",
     "automates tiny daily tasks",
