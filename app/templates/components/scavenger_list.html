@@ -4,10 +4,10 @@
             <span class="font-semibold">Scavenger Hunt</span>
             <span>{{ session.scavenger_marked_items }}/{{ session.scavenger_total_items }} complete</span>
         </div>
-        <div class="bg-gray-100 rounded" style="height: 0.5rem;">
+        <div class="bg-gray-100 rounded h-2">
             <div
-                class="bg-accent rounded transition-all duration-150"
-                style="height: 0.5rem; width: {{ session.scavenger_progress_percent }}%;"></div>
+                class="bg-accent rounded transition-all duration-150 h-2"
+                style="width: {{ session.scavenger_progress_percent }}%;"></div>
         </div>
     </div>
 
