@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.game_service import GameSession, get_session
-from app.models import GameState
+from app.models import GameMode, GameState
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -32,16 +32,22 @@ async def home(request: Request) -> Response:
     return templates.TemplateResponse(
         request,
         "home.html",
-        {"session": session, "GameState": GameState},
+        {"session": session, "GameState": GameState, "GameMode": GameMode},
     )
 
 
 @app.post("/start", response_class=HTMLResponse)
-async def start_game(request: Request) -> Response:
+async def start_game(request: Request, mode: str = "bingo") -> Response:
     session = _get_game_session(request)
-    session.start_game()
+    try:
+        game_mode = GameMode(mode)
+    except ValueError:
+        game_mode = GameMode.BINGO
+    session.start_game(game_mode)
     return templates.TemplateResponse(
-        request, "components/game_screen.html", {"session": session}
+        request,
+        "components/game_screen.html",
+        {"session": session, "GameMode": GameMode},
     )
 
 
@@ -50,7 +56,9 @@ async def toggle_square(request: Request, square_id: int) -> Response:
     session = _get_game_session(request)
     session.handle_square_click(square_id)
     return templates.TemplateResponse(
-        request, "components/game_screen.html", {"session": session}
+        request,
+        "components/game_screen.html",
+        {"session": session, "GameMode": GameMode},
     )
 
 
@@ -70,7 +78,9 @@ async def dismiss_modal(request: Request) -> Response:
     session = _get_game_session(request)
     session.dismiss_modal()
     return templates.TemplateResponse(
-        request, "components/game_screen.html", {"session": session}
+        request,
+        "components/game_screen.html",
+        {"session": session, "GameMode": GameMode},
     )
 
 

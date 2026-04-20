@@ -8,18 +8,28 @@
             <h2 class="font-semibold text-gray-800 mb-3">How to play</h2>
             <ul class="text-left text-gray-600 text-sm space-y-2">
                 <li>• Find people who match the questions</li>
-                <li>• Tap a square when you find a match</li>
-                <li>• Get 5 in a row to win!</li>
+                <li>• Choose Bingo for a 5x5 board challenge</li>
+                <li>• Choose Scavenger Hunt for a checkbox list</li>
             </ul>
         </div>
 
-        <button
-            hx-post="/start"
-            hx-target="#game-container"
-            hx-swap="outerHTML"
-            class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors">
-            Start Game
-        </button>
+        <div class="space-y-2">
+            <button
+                hx-post="/start"
+                hx-target="#game-container"
+                hx-swap="outerHTML"
+                class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors">
+                Start Bingo
+            </button>
+
+            <button
+                hx-post="/start?mode=scavenger"
+                hx-target="#game-container"
+                hx-swap="outerHTML"
+                class="w-full bg-white text-gray-800 font-semibold py-4 px-8 rounded-lg text-lg border border-gray-300 active:bg-gray-100 transition-colors">
+                Start Scavenger Hunt
+            </button>
+        </div>
     </div>
 </div>
 </div>
