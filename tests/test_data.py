@@ -21,7 +21,15 @@ def test_questions_include_coding_habits():
 
 
 def test_questions_include_ide_preferences():
-    ide_keywords = {"ide", "editor", "dark mode", "theme", "font", "tabs", "spaces"}
+    ide_keywords = {
+        "ide",
+        "editor",
+        "dark mode",
+        "theme",
+        "font",
+        "tabs over spaces",
+        "vim keybindings",
+    }
     assert _count_matches(ide_keywords) >= 5
 
 
