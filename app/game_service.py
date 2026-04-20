@@ -6,7 +6,7 @@ from app.game_logic import (
     get_winning_square_ids,
     toggle_square,
 )
-from app.models import BingoLine, BingoSquareData, GameState
+from app.models import BingoLine, BingoSquareData, GameMode, GameState
 
 
 @dataclass
@@ -14,6 +14,7 @@ class GameSession:
     """Holds the state for a single game session."""
 
     game_state: GameState = GameState.START
+    game_mode: GameMode = GameMode.BINGO
     board: list[BingoSquareData] = field(default_factory=list)
     winning_line: BingoLine | None = None
     show_bingo_modal: bool = False
@@ -26,7 +27,24 @@ class GameSession:
     def has_bingo(self) -> bool:
         return self.game_state == GameState.BINGO
 
-    def start_game(self) -> None:
+    @property
+    def scavenger_total_items(self) -> int:
+        return sum(1 for square in self.board if not square.is_free_space)
+
+    @property
+    def scavenger_marked_items(self) -> int:
+        return sum(
+            1 for square in self.board if square.is_marked and not square.is_free_space
+        )
+
+    @property
+    def scavenger_progress_percent(self) -> int:
+        if self.scavenger_total_items == 0:
+            return 0
+        return int((self.scavenger_marked_items / self.scavenger_total_items) * 100)
+
+    def start_game(self, mode: GameMode = GameMode.BINGO) -> None:
+        self.game_mode = mode
         self.board = generate_board()
         self.winning_line = None
         self.game_state = GameState.PLAYING
@@ -37,6 +55,9 @@ class GameSession:
             return
         self.board = toggle_square(self.board, square_id)
 
+        if self.game_mode == GameMode.SCAVENGER:
+            return
+
         if self.winning_line is None:
             bingo = check_bingo(self.board)
             if bingo is not None:
@@ -46,6 +67,7 @@ class GameSession:
 
     def reset_game(self) -> None:
         self.game_state = GameState.START
+        self.game_mode = GameMode.BINGO
         self.board = []
         self.winning_line = None
         self.show_bingo_modal = False

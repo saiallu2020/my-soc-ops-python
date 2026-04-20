@@ -12,6 +12,7 @@ body {
 
 /* Tailwind-like utility classes */
 .h-full { height: 100%; }
+.h-2 { height: 0.5rem; }
 .min-h-full { min-height: 100%; }
 .w-full { width: 100%; }
 .w-16 { width: 4rem; }

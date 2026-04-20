@@ -1,0 +1,33 @@
+<div class="w-full max-w-md mx-auto">
+    <div class="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+        <div class="flex items-center justify-between mb-2 text-sm text-gray-700">
+            <span class="font-semibold">Scavenger Hunt</span>
+            <span>{{ session.scavenger_marked_items }}/{{ session.scavenger_total_items }} complete</span>
+        </div>
+        <div class="bg-gray-100 rounded h-2">
+            <div
+                class="bg-accent rounded transition-all duration-150 h-2"
+                style="width: {{ session.scavenger_progress_percent }}%;"></div>
+        </div>
+    </div>
+
+    <div class="space-y-2">
+        {% for square in session.board if not square.is_free_space %}
+        <button
+            hx-post="/toggle/{{ square.id }}"
+            hx-target="#game-container"
+            hx-swap="outerHTML"
+            class="w-full flex items-center justify-between p-3 border border-gray-300 rounded text-left transition-colors
+            {%- if square.is_marked %} bg-marked text-green-800 border-marked-border
+            {%- else %} bg-white text-gray-700 active:bg-gray-100
+            {%- endif %}"
+            aria-pressed="{{ 'true' if square.is_marked else 'false' }}"
+            aria-label="{{ square.text }}">
+            <span class="wrap-break-word hyphens-auto">{{ square.text }}</span>
+            <span class="font-semibold">
+                {% if square.is_marked %}☑{% else %}☐{% endif %}
+            </span>
+        </button>
+        {% endfor %}
+    </div>
+</div>
